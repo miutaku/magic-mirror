@@ -67,7 +67,7 @@ jobs:
         region: ${{ env.REGION }}
         image: ghcr.io/${{ github.actor }}/${{ github.repository }}/mm-server
         secrets: |-
-          OPEN_WEATHER_MAP_LOCATION=${{ secrets.OPEN_WEATHER_MAP_LOCATION }}:latest
-          OPEN_WEATHER_MAP_LOCATION_ID=${{ secrets.OPEN_WEATHER_MAP_LOCATION_ID }}:latest
-          OPEN_WEATHER_MAP_API_KEY=${{ secrets.OPEN_WEATHER_MAP_API_KEY }}:latest
-          CALENDAR_ICS_URL_PATH=${{ secrets.CALENDAR_ICS_URL_PATH }}:latest
+          OPEN_WEATHER_MAP_LOCATION=OPEN_WEATHER_MAP_LOCATION:latest
+          OPEN_WEATHER_MAP_LOCATION_ID=OPEN_WEATHER_MAP_LOCATION_ID:latest
+          OPEN_WEATHER_MAP_API_KEY=OPEN_WEATHER_MAP_API_KEY:latest
+          CALENDAR_ICS_URL_PATH=CALENDAR_ICS_URL_PATH:latest
