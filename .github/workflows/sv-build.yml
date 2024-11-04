@@ -2,8 +2,6 @@
 name: Server build and deploy
 on:
   push:
-    paths:
-      - 'server/**'
 
 env:
   IMAGE: 'docker.io/bastilimbach/docker-magicmirror'
