@@ -43,7 +43,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ github.repository }}-sv"
+          images: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/magic-mirror-sv"
           tags: |
             type=raw,value=latest
             type=sha,prefix=,suffix=,format=short
@@ -76,7 +76,7 @@ jobs:
       with:
         service: ${{ env.SERVICE }}
         region: ${{ env.REGION }}
-        image: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ github.repository }}-sv"
+        image: "${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/magic-mirror-sv"
         secrets: |-
           OPEN_WEATHER_MAP_LOCATION=OPEN_WEATHER_MAP_LOCATION:latest
           OPEN_WEATHER_MAP_LOCATION_ID=OPEN_WEATHER_MAP_LOCATION_ID:latest
