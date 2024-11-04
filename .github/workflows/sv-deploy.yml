@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - '"main"'
-  paths:
-    - 'server/**'
+    paths:
+      - 'server/**'
 
 env:
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
