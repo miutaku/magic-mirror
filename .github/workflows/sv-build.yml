@@ -64,6 +64,7 @@ jobs:
       uses: 'google-github-actions/deploy-cloudrun@v2'
       with:
         service: ${{ env.SERVICE }}
+        region: ${{ env.REGION }}
         image: ghcr.io/${{ github.actor }}/${{ github.repository }}/mm-server
         secrets: |-
           OPEN_WEATHER_MAP_LOCATION=${{ secrets.OPEN_WEATHER_MAP_LOCATION }}
