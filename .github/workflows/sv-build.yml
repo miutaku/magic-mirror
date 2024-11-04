@@ -32,7 +32,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: "ghcr.io/${{ github.repository }}-sv"
+          images: "https://${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ github.repository }}-sv"
           tags: |
             type=raw,value=latest
             type=sha,prefix=,suffix=,format=short
@@ -65,7 +65,7 @@ jobs:
       with:
         service: ${{ env.SERVICE }}
         region: ${{ env.REGION }}
-        image: "ghcr.io/${{ github.repository }}-sv"
+        image: "https://${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ github.repository }}-sv"
         secrets: |-
           OPEN_WEATHER_MAP_LOCATION=OPEN_WEATHER_MAP_LOCATION:latest
           OPEN_WEATHER_MAP_LOCATION_ID=OPEN_WEATHER_MAP_LOCATION_ID:latest
