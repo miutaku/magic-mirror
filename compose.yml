@@ -1,5 +1,5 @@
 services:
-  epgstation:
+  mm-server:
     container_name: mm-server
     build:
       context: "./server"
