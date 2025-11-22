@@ -1,0 +1,12 @@
+services:
+  mm-server:
+    container_name: mm-server
+    build:
+      context: "./server"
+      dockerfile: "Dockerfile"
+    environment:
+      LANG: "ja_JP.UTF-8"
+      TZ: "Asia/Tokyo"
+    ports:
+      - "8080:8080"
+    restart: always
