@@ -1,0 +1,58 @@
+name: Verify MagicMirror server
+on:
+  pull_request:
+    paths: ['server/**', '.github/workflows/**']
+  push:
+    branches: [main]
+    paths: ['server/**', '.github/workflows/ci.yml']
+permissions:
+  contents: read
+jobs:
+  server:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build server image
+        run: docker build -t magicmirror-ci server
+      - name: Verify runtime and environment configuration
+        run: |
+          docker run --rm --entrypoint node \
+            -e OPEN_WEATHER_MAP_LOCATION=TestCity \
+            -e OPEN_WEATHER_MAP_LOCATION_ID=123 \
+            -e OPEN_WEATHER_MAP_API_KEY=test-key \
+            -e CALENDAR_ICS_URL_PATH=http://127.0.0.1:9/calendar.ics \
+            magicmirror-ci -e '
+              const assert = require("node:assert/strict");
+              assert.equal(process.versions.node, "24.22.1");
+              const config = require("./config/config.js");
+              const weather = config.modules.find(m => m.module === "weather").config;
+              assert.equal(weather.location, "TestCity");
+              assert.equal(weather.apiKey, "test-key");
+              for (const calendar of config.modules.filter(m => m.module === "calendar"))
+                assert.equal(calendar.config.calendars[0].url, "http://127.0.0.1:9/calendar.ics");
+            '
+      - name: Start server with isolated test configuration
+        run: |
+          mkdir -p "$RUNNER_TEMP/magicmirror"
+          docker run --rm --entrypoint node \
+            -e OPEN_WEATHER_MAP_API_KEY=test-key \
+            -e CALENDAR_ICS_URL_PATH=http://127.0.0.1:9/calendar.ics \
+            magicmirror-ci -e '
+              const config = require("./config/config.js");
+              config.ipWhitelist = [];
+              config.modules = config.modules.filter(m => m.module !== "updatenotification");
+              process.stdout.write("module.exports = " + JSON.stringify(config) + ";");
+            ' > "$RUNNER_TEMP/magicmirror/config.js"
+          docker run -d --name magicmirror-ci -p 127.0.0.1:8080:8080 \
+            --mount "type=bind,src=$RUNNER_TEMP/magicmirror/config.js,dst=/opt/magic_mirror/config/config.js,readonly" \
+            magicmirror-ci
+          curl --fail --retry 20 --retry-delay 2 --retry-all-errors \
+            http://127.0.0.1:8080/ > "$RUNNER_TEMP/magicmirror/index.html"
+          grep -q MagicMirror "$RUNNER_TEMP/magicmirror/index.html"
+      - name: Server logs
+        if: always()
+        run: docker logs magicmirror-ci || true
+      - name: Stop test server
+        if: always()
+        run: docker rm -f magicmirror-ci || true

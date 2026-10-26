@@ -64,9 +64,9 @@ let config = {
 				units: "metric",
 				degreeLabel: true,
 				lang: "ja",
-				location: "${OPEN_WEATHER_MAP_LOCATION}",
-				locationID: "${OPEN_WEATHER_MAP_LOCATION_ID}", //ID from http://bulk.openweathermap.org/sample/city.list.json.gz; unzip the gz file
-				apiKey: "${OPEN_WEATHER_MAP_API_KEY}"
+				location: process.env.OPEN_WEATHER_MAP_LOCATION || "",
+				locationID: process.env.OPEN_WEATHER_MAP_LOCATION_ID || "",
+				apiKey: process.env.OPEN_WEATHER_MAP_API_KEY || ""
 			}
 		},
 		{
@@ -87,7 +87,7 @@ let config = {
 			    limitDaysNeverSkip: true,
                             calendars: [
                                 {
-				    url: "${CALENDAR_ICS_URL_PATH}",
+				    url: process.env.CALENDAR_ICS_URL_PATH || "",
                                 }
                         ]
                     }
@@ -109,7 +109,7 @@ let config = {
 			    limitDaysNeverSkip: true,
                             calendars: [
                                 {
-				    url: "${CALENDAR_ICS_URL_PATH}",
+				    url: process.env.CALENDAR_ICS_URL_PATH || "",
                                 }
                         ]
                     }

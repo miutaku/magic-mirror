@@ -1,13 +1,15 @@
 ---
 name: Server build and deploy
 on:
-  branches:
-    - 'main'
-  paths:
-    - 'server/**'
+  push:
+    branches: [main]
+    paths:
+      - 'server/**'
+      - '.github/workflows/sv-build.yml'
+  workflow_dispatch:
 
 env:
-  IMAGE: 'docker.io/bastilimbach/docker-magicmirror'
+  IMAGE: 'docker.io/karsten13/magicmirror'
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
   REGION: 'us-west1'
   SERVICE: ${{ secrets.SERVICE }}
